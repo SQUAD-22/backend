@@ -4,6 +4,7 @@ import helmet from 'helmet';
 //Inicializar o módulo dotenv para ler arquivos .env
 import 'dotenv/config';
 import authRouter from './routes/Auth.routes';
+import databaseConnect from './database';
 
 //Inicializa uma aplicação express
 const app = express();
@@ -18,4 +19,5 @@ app.use('/auth', authRouter);
 
 app.listen(process.env.PORT, () => {
   console.log('[BACKEND] Servidor iniciado com sucesso!');
+  databaseConnect();
 });
