@@ -1,37 +1,27 @@
 import { Request, Response } from 'express';
 import transporter from '../services/email';
-import AuthErrors from '../constants/errors/AuthErrors';
-import UserModel from '../models/User.model';
 import AuthValidators from '../validators/Auth.validators';
-import jwt from 'jsonwebtoken';
+import UserService from '../services/database/User.service';
+import JWTService from '../services/misc/JWT.service';
 
 export default {
   register: async (req: Request, res: Response) => {
     const { email } = req.body;
 
     //Validação de campos
-    const validationError = AuthValidators.register(email);
+    const validationError = await AuthValidators.register(email);
+
     //Caso existam erros, retornar o erro para o usuário
     if (validationError)
       return res.status(validationError.status).json(validationError);
 
-    //Pesquisar usuário no banco de dados
-    const user = await UserModel.findOne({ email: email });
-    //Se usuário existir, retornar erro
-    const emailError = AuthErrors.ACCOUNT_ALREADY_EXISTS;
-    if (user) return res.status(emailError.status).json(emailError);
-
     //Cria usuário no banco de dados
-    const newUser = await UserModel.create({
-      email: email,
-    });
+    const newUser = await UserService.createUserByEmail(email);
 
     //Gerar um token que vai identificar o usuário quando ele verificar o e-mail
-    const { JWT_KEY } = process.env;
-    const validationToken = jwt.sign({ userId: newUser._id }, JWT_KEY);
+    const validationToken = JWTService.signJWT({ userId: newUser._id });
 
     //TODO: CRIAR UM TEMPLATE ORGANIZADO PARA O EMAIL.
-
     const validationUrl =
       'http://localhost:3333/auth/validate/' + validationToken;
     //Email que será enviado para o usuário verificar o email
