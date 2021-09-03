@@ -30,4 +30,9 @@ export default {
     errorId: 'AUTH/EMAIL_NOT_VERIFIED',
     message: 'O e-mail deste usuário ainda não foi verificado.',
   },
+  ACCOUNT_ALREADY_EXISTS: {
+    status: 409,
+    errorId: 'AUTH/EMAIL_ALREADY_EXISTS',
+    message: 'O e-mail informado já está cadastrado.',
+  },
 };
