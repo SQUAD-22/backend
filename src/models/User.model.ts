@@ -11,7 +11,6 @@ export interface User {
 const schema = new Schema<User>({
   fullName: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -19,7 +18,6 @@ const schema = new Schema<User>({
   },
   password: {
     type: String,
-    required: true,
   },
   verified: {
     type: Boolean,
