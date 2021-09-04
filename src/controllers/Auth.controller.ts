@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import ReqWithUserID from '../types/ReqWithUserID';
 import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
 
@@ -15,5 +16,19 @@ export default {
     return res.status(200).json({
       token: validationToken,
     });
+  },
+
+  verifyEmail: async (req: ReqWithUserID, res: Response) => {
+    const { userId } = req;
+
+    const user = await UserService.findById(userId);
+
+    //Marca usuário como verificado
+    user.verified = true;
+
+    //Salva o usuário
+    await user.save();
+
+    return res.json({ error: null });
   },
 };
