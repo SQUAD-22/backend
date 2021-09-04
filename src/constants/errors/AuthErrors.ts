@@ -35,4 +35,9 @@ export default {
     errorId: 'AUTH/EMAIL_ALREADY_EXISTS',
     message: 'O e-mail informado já está cadastrado.',
   },
+  INVALID_TOKEN: {
+    status: 400,
+    errorId: 'AUTH/INVALID_TOKEN',
+    message: 'O token informado não é válido.',
+  },
 };
