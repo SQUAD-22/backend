@@ -1,20 +1,28 @@
 import UserService from '../services/database/User.service';
 import AuthErrors from '../constants/errors/AuthErrors';
+import JWTService from '../services/misc/JWT.service';
+import { NextFunction, Request, Response } from 'express';
+import { ResponseHelpers } from '../services/misc/Response.service';
 
 export default {
-  register: async (email: string) => {
+  validateRegister: async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    const { MISSING_FIELDS, INVALID_EMAIL, ACCOUNT_ALREADY_EXISTS } =
+      AuthErrors;
+    const { sendError } = ResponseHelpers;
+
     //Verificar se os campos foram passados corretamente
-    if (!email) return AuthErrors.MISSING_FIELDS;
+    if (!email) return sendError(res, MISSING_FIELDS);
 
     //Valida email
     const emailRegex =
       /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(fcamara)\.com.br$/;
-    if (!emailRegex.test(email)) return AuthErrors.INVALID_EMAIL;
+    if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
 
     //Verifica se usuário já existe no banco de dados
     const user = await UserService.findByEmail(email);
-    if (user) return AuthErrors.ACCOUNT_ALREADY_EXISTS;
+    if (user) return sendError(res, ACCOUNT_ALREADY_EXISTS);
 
-    return false;
+    next();
   },
 };
