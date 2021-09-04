@@ -10,7 +10,7 @@ export default {
   decodeJWT: async (token: string) => {
     try {
       const decodedToken = jwt.verify(token, JWT_KEY);
-      return decodedToken;
+      return decodedToken as jwt.JwtPayload;
     } catch (err) {
       return null;
     }

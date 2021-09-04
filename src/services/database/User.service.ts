@@ -10,4 +10,9 @@ export default {
     const user = await UserModel.create({ email });
     return user;
   },
+
+  findById: async (id: string) => {
+    const user = await UserModel.findById(id);
+    return user;
+  },
 };
