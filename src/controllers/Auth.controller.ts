@@ -4,6 +4,8 @@ import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
 import { hash } from 'bcrypt';
 
+const { signJWT } = JWTService;
+
 export default {
   register: async (req: Request, res: Response) => {
     const { email } = req.body;
@@ -36,5 +38,14 @@ export default {
     await user.save();
 
     return res.json({ error: null });
+  },
+
+  login: async (req: ReqWithUserID, res: Response) => {
+    const { userId } = req;
+
+    //Criar token de identificação do usuário
+    const token = await signJWT({ userId });
+
+    return res.status(200).json({ token });
   },
 };

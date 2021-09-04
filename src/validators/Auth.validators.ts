@@ -4,6 +4,7 @@ import JWTService from '../services/misc/JWT.service';
 import { NextFunction, Request, Response } from 'express';
 import { ResponseHelpers } from '../services/misc/Response.service';
 import ReqWithUserID from '../types/ReqWithUserID';
+import { compare } from 'bcrypt';
 
 const {
   MISSING_FIELDS,
@@ -12,9 +13,14 @@ const {
   INVALID_TOKEN,
   ALREADY_VERIFIED,
   PASSWORD_TOO_SHORT,
+  EMAIL_NOT_FOUND,
+  WRONG_PASSWORD,
+  EMAIL_NOT_VERIFIED,
 } = AuthErrors;
 const { sendError } = ResponseHelpers;
 const { decodeJWT } = JWTService;
+const emailRegex =
+  /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(fcamara)\.com.br$/;
 
 export default {
   validateRegister: async (req: Request, res: Response, next: NextFunction) => {
@@ -24,8 +30,6 @@ export default {
     if (!email) return sendError(res, MISSING_FIELDS);
 
     //Valida email
-    const emailRegex =
-      /^[a-zA-Z0-9_.+-]+@(?:(?:[a-zA-Z0-9-]+\.)?[a-zA-Z]+\.)?(fcamara)\.com.br$/;
     if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
 
     //Verifica se usuário já existe no banco de dados
@@ -42,7 +46,7 @@ export default {
   ) => {
     const { token, password } = req.body;
 
-    //Checa se o token de identificação foi enviado
+    //Checa se o token de identificação e senha foram enviados
     if (!token || !password) return sendError(res, MISSING_FIELDS);
 
     //Checa se o token de identificação é válido
@@ -63,6 +67,38 @@ export default {
 
     //Enviar userId para o controller
     req.userId = decodedToken.userId;
+    next();
+  },
+
+  validateLogin: async (
+    req: ReqWithUserID,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { email, password } = req.body;
+
+    //Checa se email e senha foram enviados
+    if (!email || !password) return sendError(res, MISSING_FIELDS);
+
+    //Checa se o email é válido
+    if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
+
+    //Checa se senha é válida
+    if (password.length < 6) return sendError(res, PASSWORD_TOO_SHORT);
+
+    //Checa se usuário existe
+    const user = await UserService.findByEmail(email);
+    if (!user) return sendError(res, EMAIL_NOT_FOUND);
+
+    //Checa se o usuário tem o email verificado
+    if (!user.verified) return sendError(res, EMAIL_NOT_VERIFIED);
+
+    //Checa se a senha do usuário está correta
+    const passwordMatch = await compare(password, user.password);
+    if (!passwordMatch) return sendError(res, WRONG_PASSWORD);
+
+    //Envia o user id para o controller
+    req.userId = user._id;
     next();
   },
 };
