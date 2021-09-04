@@ -40,4 +40,9 @@ export default {
     errorId: 'AUTH/INVALID_TOKEN',
     message: 'O token informado não é válido.',
   },
+  ALREADY_VERIFIED: {
+    status: 409,
+    errorId: 'AUTH/ALREDY_VERIFIED',
+    message: 'Este e-mail já está confirmado.',
+  },
 };
