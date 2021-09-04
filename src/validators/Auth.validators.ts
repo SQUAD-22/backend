@@ -11,6 +11,7 @@ const {
   ACCOUNT_ALREADY_EXISTS,
   INVALID_TOKEN,
   ALREADY_VERIFIED,
+  PASSWORD_TOO_SHORT,
 } = AuthErrors;
 const { sendError } = ResponseHelpers;
 const { decodeJWT } = JWTService;
@@ -39,16 +40,19 @@ export default {
     res: Response,
     next: NextFunction
   ) => {
-    const { token } = req.body;
+    const { token, password } = req.body;
 
     //Checa se o token de identificação foi enviado
-    if (!token) return sendError(res, MISSING_FIELDS);
+    if (!token || !password) return sendError(res, MISSING_FIELDS);
 
     //Checa se o token de identificação é válido
     const decodedToken = await decodeJWT(token);
     if (!decodedToken) return sendError(res, INVALID_TOKEN);
 
     const { userId } = decodedToken;
+
+    //Checa se a senha informada é válida
+    if (password.length < 6) return sendError(res, PASSWORD_TOO_SHORT);
 
     //Checar se o usuário existe
     const user = await UserService.findById(userId);

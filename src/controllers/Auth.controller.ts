@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import ReqWithUserID from '../types/ReqWithUserID';
 import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
+import { hash } from 'bcrypt';
 
 export default {
   register: async (req: Request, res: Response) => {
@@ -20,11 +21,16 @@ export default {
 
   verifyEmail: async (req: ReqWithUserID, res: Response) => {
     const { userId } = req;
+    const { password } = req.body;
 
     const user = await UserService.findById(userId);
 
+    //Encripta a senha do consultor
+    const encryptedPassword = await hash(password, 10);
+
     //Marca usuário como verificado
     user.verified = true;
+    user.password = encryptedPassword;
 
     //Salva o usuário
     await user.save();
