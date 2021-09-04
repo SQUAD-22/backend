@@ -1,8 +1,18 @@
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
+
+const { JWT_KEY } = process.env;
 
 export default {
-  signJWT: (payload: string | object | Buffer) => {
-    const { JWT_KEY } = process.env;
+  signJWT: async (payload: string | object | Buffer) => {
     return jwt.sign(payload, JWT_KEY);
+  },
+
+  decodeJWT: async (token: string) => {
+    try {
+      const decodedToken = jwt.verify(token, JWT_KEY);
+      return decodedToken;
+    } catch (err) {
+      return null;
+    }
   },
 };
