@@ -3,6 +3,7 @@ import ReqWithUserID from '../types/ReqWithUserID';
 import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
 import { hash } from 'bcrypt';
+import { EmailService } from '../services/email/Email.service';
 
 const { signJWT } = JWTService;
 
@@ -11,13 +12,15 @@ export default {
     const { email } = req.body;
 
     //Cria usuário no banco de dados
-    const newUser = await UserService.createUserByEmail(email);
+    //const newUser = await UserService.createUserByEmail(email);
 
     //Gerar um token que vai identificar o usuário quando ele verificar o e-mail
-    const validationToken = await JWTService.signJWT({ userId: newUser._id });
+    //const validationToken = await JWTService.signJWT({ userId: newUser._id });
+
+    await EmailService.sendConfirmationEmail(email, 'oi');
 
     return res.status(200).json({
-      token: validationToken,
+      token: 'ok',
     });
   },
 

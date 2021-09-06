@@ -30,7 +30,7 @@ export default {
     if (!email) return sendError(res, MISSING_FIELDS);
 
     //Valida email
-    if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
+    //if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
 
     //Verifica se usuário já existe no banco de dados
     const user = await UserService.findByEmail(email);

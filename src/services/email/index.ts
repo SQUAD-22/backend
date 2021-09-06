@@ -1,5 +1,5 @@
 import { createTransport } from 'nodemailer';
-import Email from "email-templates"
+import Email from 'email-templates';
 
 //Desestruturando as informações do .env
 const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
@@ -21,10 +21,10 @@ const email = new Email({
   preview: false,
   views: {
     options: {
-      extension:"pug"
+      extension: 'pug',
     },
-    root: "./templates/"
-  }
-})
+    root: __dirname + '/templates',
+  },
+});
 
 export default email;
