@@ -12,21 +12,23 @@ export default {
     const { email } = req.body;
 
     //Cria usuário no banco de dados
-    //const newUser = await UserService.createUserByEmail(email);
+    const newUser = await UserService.createUserByEmail(email);
 
     //Gerar um token que vai identificar o usuário quando ele verificar o e-mail
-    //const validationToken = await JWTService.signJWT({ userId: newUser._id });
+    const validationToken = await JWTService.signJWT({ userId: newUser._id });
 
-    await EmailService.sendConfirmationEmail(email, 'oi');
+    await EmailService.sendConfirmationEmail(email, validationToken);
+
+    console.log(validationToken);
 
     return res.status(200).json({
-      token: 'ok',
+      emailSent: true,
     });
   },
 
   verifyEmail: async (req: ReqWithUserID, res: Response) => {
     const { userId } = req;
-    const { password } = req.body;
+    const { password, name } = req.body;
 
     const user = await UserService.findById(userId);
 
@@ -36,6 +38,7 @@ export default {
     //Marca usuário como verificado
     user.verified = true;
     user.password = encryptedPassword;
+    user.fullName = name;
 
     //Salva o usuário
     await user.save();

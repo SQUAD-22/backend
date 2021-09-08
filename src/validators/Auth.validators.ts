@@ -44,10 +44,10 @@ export default {
     res: Response,
     next: NextFunction
   ) => {
-    const { token, password } = req.body;
+    const { token, password, name } = req.body;
 
     //Checa se o token de identificação e senha foram enviados
-    if (!token || !password) return sendError(res, MISSING_FIELDS);
+    if (!token || !password || !name) return sendError(res, MISSING_FIELDS);
 
     //Checa se o token de identificação é válido
     const decodedToken = await decodeJWT(token);
