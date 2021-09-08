@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import cors from 'cors';
 
 //Inicializar o módulo dotenv para ler arquivos .env
 import 'dotenv/config';
@@ -13,6 +14,8 @@ const app = express();
 app.use(express.json());
 //Middleware de segurança
 app.use(helmet());
+//Cors
+app.use(cors());
 
 //Rotas
 app.use('/auth', authRouter);
