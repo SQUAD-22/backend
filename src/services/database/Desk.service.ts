@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import DeskModel, { Desk } from '../../models/Desk.model';
 import OfficeModel from '../../models/Office.model';
 
@@ -29,5 +30,20 @@ export default {
     officeDoc.deskCount += howMany;
     await DeskModel.insertMany(desks);
     await officeDoc.save();
+  },
+
+  changeAvailable: async (deskIds: number[], office: string) => {
+    const parsedObjectId = new Types.ObjectId(office);
+
+    await DeskModel.updateMany(
+      { office: parsedObjectId, deskId: { $in: deskIds } },
+      [
+        {
+          $set: {
+            available: { $not: '$available' },
+          },
+        },
+      ]
+    );
   },
 };

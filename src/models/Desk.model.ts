@@ -1,9 +1,9 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 
 export interface Desk {
   deskId: number;
   available: boolean;
-  office: Schema.Types.ObjectId;
+  office: Types.ObjectId;
 }
 
 const schema = new Schema<Desk>({
