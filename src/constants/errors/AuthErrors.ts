@@ -45,4 +45,9 @@ export default {
     errorId: 'AUTH/ALREDY_VERIFIED',
     message: 'Este e-mail já está confirmado.',
   },
+  TOKEN_NOT_FOUND: {
+    status: 400,
+    errorId: 'AUTH/TOKEN_NOT_FOUND',
+    message: 'O token de autenticação não foi encontrado.',
+  },
 };

@@ -16,6 +16,7 @@ const {
   EMAIL_NOT_FOUND,
   WRONG_PASSWORD,
   EMAIL_NOT_VERIFIED,
+  TOKEN_NOT_FOUND,
 } = AuthErrors;
 const { sendError } = ResponseHelpers;
 const { decodeJWT } = JWTService;
@@ -81,7 +82,7 @@ export default {
     if (!email || !password) return sendError(res, MISSING_FIELDS);
 
     //Checa se o email é válido
-    if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
+    //if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
 
     //Checa se senha é válida
     if (password.length < 6) return sendError(res, PASSWORD_TOO_SHORT);
@@ -99,6 +100,20 @@ export default {
 
     //Envia o user id para o controller
     req.userId = user._id;
+    next();
+  },
+
+  needsAuth: async (req: ReqWithUserID, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return sendError(res, TOKEN_NOT_FOUND);
+
+    const token = authHeader.split(' ')[1];
+    if (!token) return sendError(res, TOKEN_NOT_FOUND);
+
+    const decodedToken = await decodeJWT(token);
+    if (!decodedToken) return sendError(res, INVALID_TOKEN);
+
+    req.userId = decodedToken.userId;
     next();
   },
 };
