@@ -6,6 +6,7 @@ import cors from 'cors';
 import 'dotenv/config';
 import authRouter from './routes/Auth.routes';
 import databaseConnect from './database';
+import officeRouter from './routes/Office.routes';
 
 //Inicializa uma aplicação express
 const app = express();
@@ -19,6 +20,7 @@ app.use(cors());
 
 //Rotas
 app.use('/auth', authRouter);
+app.use('/office', officeRouter);
 
 app.listen(process.env.PORT, () => {
   console.log('[BACKEND] Servidor iniciado com sucesso!');
