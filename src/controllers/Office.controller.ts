@@ -16,4 +16,19 @@ export default {
 
     return res.status(201).json(newOffice);
   },
+
+  update: async (req: ReqWithUserID, res: Response) => {
+    const { office, name, state, city, occupationLimitPercent, deskCount } =
+      req.body;
+
+    const updatedDoc = await OfficeService.update(office, {
+      state,
+      name,
+      city,
+      occupationLimitPercent,
+      deskCount,
+    });
+
+    return res.status(200).json(updatedDoc);
+  },
 };
