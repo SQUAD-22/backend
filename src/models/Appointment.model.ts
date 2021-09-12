@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 export interface Appointment {
   userId: Schema.Types.ObjectId;
   office: Schema.Types.ObjectId;
-  desk: Schema.Types.ObjectId;
+  desk: number;
   at: string;
   cancelled: boolean;
 }
@@ -18,7 +18,7 @@ const schema = new Schema<Appointment>({
     required: true,
   },
   desk: {
-    type: Schema.Types.ObjectId,
+    type: Number,
     required: true,
   },
   at: {
