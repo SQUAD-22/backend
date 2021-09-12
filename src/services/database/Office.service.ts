@@ -51,4 +51,9 @@ export default {
     await officeDoc.save();
     return officeDoc;
   },
+
+  list: async () => {
+    const allOfices = await OfficeModel.find({});
+    return allOfices;
+  }
 };

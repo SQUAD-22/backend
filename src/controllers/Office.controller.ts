@@ -31,4 +31,9 @@ export default {
 
     return res.status(200).json(updatedDoc);
   },
+
+  list: async (_req: ReqWithUserID, res: Response) => {
+    const allOffices = await OfficeService.list();
+    return res.status(200).json(allOffices);
+  }
 };
