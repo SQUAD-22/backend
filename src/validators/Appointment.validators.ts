@@ -6,6 +6,7 @@ import { ResponseHelpers } from '../services/misc/Response.service';
 import OfficeModel from '../models/Office.model';
 import AppointmentModel from '../models/Appointment.model';
 import { parse, isValid, isPast } from 'date-fns';
+import DeskModel from '../models/Desk.model';
 
 const { sendError } = ResponseHelpers;
 const { INVALID_FIELD, ALREADY_OCCUPIED } = AppointmentErrors;
@@ -29,6 +30,13 @@ export default {
     //Caso o numero da estacao de trabalho seja invalido
     if (desk < 0 || desk > officeInstance.deskCount)
       return sendError(res, INVALID_FIELD);
+
+    //Verificar se a estação é válida
+    const deskInstance = await DeskModel.findOne({
+      office: office,
+      deskId: desk,
+    });
+    if (!deskInstance.available) return sendError(res, INVALID_FIELD);
 
     //Checar se a data é válida
     try {
