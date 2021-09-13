@@ -1,10 +1,9 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import AppointmentService from '../services/database/Appointment.service';
 import DeskService from '../services/database/Desk.service';
-import ReqWithUserID from '../types/ReqWithUserID';
 
 export default {
-  update: async (req: ReqWithUserID, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const { deskIds, office } = req.body;
 
     await DeskService.changeAvailable(deskIds, office);
@@ -12,7 +11,7 @@ export default {
     return res.status(200).json({ error: null });
   },
 
-  listDesks: async (req: ReqWithUserID, res: Response) => {
+  listDesks: async (req: Request, res: Response) => {
     const { date, office } = req.body;
 
     const allDesks = await DeskService.listAll(office);

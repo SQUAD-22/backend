@@ -1,5 +1,4 @@
-import { NextFunction, Response } from 'express';
-import ReqWithUserID from '../types/ReqWithUserID';
+import { NextFunction, Response, Request } from 'express';
 import { isValidObjectId } from 'mongoose';
 import DeskErrors from '../constants/errors/DeskErrors';
 import { ResponseHelpers } from '../services/misc/Response.service';
@@ -9,11 +8,7 @@ const { sendError } = ResponseHelpers;
 const { INVALID_FIELD } = DeskErrors;
 
 export default {
-  validateUpdate: async (
-    req: ReqWithUserID,
-    res: Response,
-    next: NextFunction
-  ) => {
+  validateUpdate: async (req: Request, res: Response, next: NextFunction) => {
     const { office, deskIds } = req.body;
 
     //Checar se office é um objectid válido

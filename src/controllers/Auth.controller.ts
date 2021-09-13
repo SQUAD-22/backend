@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import ReqWithUserID from '../types/ReqWithUserID';
 import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
 import { hash } from 'bcrypt';
@@ -26,7 +25,7 @@ export default {
     });
   },
 
-  verifyEmail: async (req: ReqWithUserID, res: Response) => {
+  verifyEmail: async (req: Request, res: Response) => {
     const { userId } = req;
     const { password, name } = req.body;
 
@@ -46,7 +45,7 @@ export default {
     return res.json({ error: null });
   },
 
-  login: async (req: ReqWithUserID, res: Response) => {
+  login: async (req: Request, res: Response) => {
     const { userId } = req;
 
     //Criar token de identificação do usuário

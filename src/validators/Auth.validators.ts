@@ -3,7 +3,6 @@ import AuthErrors from '../constants/errors/AuthErrors';
 import JWTService from '../services/misc/JWT.service';
 import { NextFunction, Request, Response } from 'express';
 import { ResponseHelpers } from '../services/misc/Response.service';
-import ReqWithUserID from '../types/ReqWithUserID';
 import { compare } from 'bcrypt';
 
 const {
@@ -41,7 +40,7 @@ export default {
   },
 
   validateVerifyemail: async (
-    req: ReqWithUserID,
+    req: Request,
     res: Response,
     next: NextFunction
   ) => {
@@ -53,6 +52,7 @@ export default {
     //Checa se o token de identificação é válido
     const decodedToken = await decodeJWT(token);
     if (!decodedToken) return sendError(res, INVALID_TOKEN);
+    Request;
 
     const { userId } = decodedToken;
 
@@ -71,11 +71,7 @@ export default {
     next();
   },
 
-  validateLogin: async (
-    req: ReqWithUserID,
-    res: Response,
-    next: NextFunction
-  ) => {
+  validateLogin: async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
     //Checa se email e senha foram enviados
@@ -103,7 +99,7 @@ export default {
     next();
   },
 
-  needsAuth: async (req: ReqWithUserID, res: Response, next: NextFunction) => {
+  needsAuth: async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return sendError(res, TOKEN_NOT_FOUND);
 

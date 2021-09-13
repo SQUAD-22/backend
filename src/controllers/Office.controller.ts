@@ -1,9 +1,8 @@
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import OfficeService from '../services/database/Office.service';
-import ReqWithUserID from '../types/ReqWithUserID';
 
 export default {
-  create: async (req: ReqWithUserID, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const { name, state, city, occupationLimitPercent, deskCount } = req.body;
 
     const newOffice = await OfficeService.create({
@@ -17,7 +16,7 @@ export default {
     return res.status(201).json(newOffice);
   },
 
-  update: async (req: ReqWithUserID, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const { office, name, state, city, occupationLimitPercent, deskCount } =
       req.body;
 
@@ -32,8 +31,8 @@ export default {
     return res.status(200).json(updatedDoc);
   },
 
-  list: async (_req: ReqWithUserID, res: Response) => {
+  list: async (_req: Request, res: Response) => {
     const allOffices = await OfficeService.list();
     return res.status(200).json(allOffices);
-  }
+  },
 };

@@ -1,5 +1,4 @@
-import { NextFunction, Response } from 'express';
-import ReqWithUserID from '../types/ReqWithUserID';
+import { NextFunction, Response, Request } from 'express';
 import { ResponseHelpers } from '../services/misc/Response.service';
 import OfficeErrors from '../constants/errors/OfficeErrors';
 import { isValidObjectId } from 'mongoose';
@@ -9,11 +8,7 @@ const { sendError } = ResponseHelpers;
 const { MISSING_FIELDS, INVALID_FIELD } = OfficeErrors;
 
 export default {
-  validateCreate: async (
-    req: ReqWithUserID,
-    res: Response,
-    next: NextFunction
-  ) => {
+  validateCreate: async (req: Request, res: Response, next: NextFunction) => {
     const { name, state, city, occupationLimitPercent, deskCount } = req.body;
 
     //Se algum dos campos não for enviado
@@ -35,11 +30,7 @@ export default {
     next();
   },
 
-  validateUpdate: async (
-    req: ReqWithUserID,
-    res: Response,
-    next: NextFunction
-  ) => {
+  validateUpdate: async (req: Request, res: Response, next: NextFunction) => {
     const { occupationLimitPercent, deskCount, office } = req.body;
 
     //Verificar se o office é um objectid válido

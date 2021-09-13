@@ -1,5 +1,4 @@
-import ReqWithUserID from '../types/ReqWithUserID';
-import { Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import { isValidObjectId } from 'mongoose';
 import AppointmentErrors from '../constants/errors/AppointmentErrors';
 import { ResponseHelpers } from '../services/misc/Response.service';
@@ -12,11 +11,7 @@ const { sendError } = ResponseHelpers;
 const { INVALID_FIELD, ALREADY_OCCUPIED } = AppointmentErrors;
 
 export default {
-  validateCreate: async (
-    req: ReqWithUserID,
-    res: Response,
-    next: NextFunction
-  ) => {
+  validateCreate: async (req: Request, res: Response, next: NextFunction) => {
     const { date, desk, office } = req.body;
 
     //Verificar se os campos são tipos validos.

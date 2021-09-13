@@ -1,9 +1,8 @@
-import { Response } from 'express';
-import ReqWithUserID from '../types/ReqWithUserID';
+import { Response, Request } from 'express';
 import AppointmentService from '../services/database/Appointment.service';
 
 export default {
-  create: async (req: ReqWithUserID, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const { date, office, desk } = req.body;
 
     const newAppointment = await AppointmentService.create(office, date, desk);
