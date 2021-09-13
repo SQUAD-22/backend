@@ -1,8 +1,8 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 
 export interface Appointment {
-  userId: Schema.Types.ObjectId;
-  office: Schema.Types.ObjectId;
+  userId: Types.ObjectId;
+  office: Types.ObjectId;
   desk: number;
   at: string;
   cancelled: boolean;

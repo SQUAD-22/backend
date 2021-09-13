@@ -5,5 +5,6 @@ import DeskValidators from '../validators/Desk.validators';
 const deskRouter = Router();
 
 deskRouter.put('/update', DeskValidators.validateUpdate, DeskController.update);
+deskRouter.post('/listdesks', DeskController.listDesks);
 
 export default deskRouter;

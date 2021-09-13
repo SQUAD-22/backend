@@ -46,4 +46,11 @@ export default {
       ]
     );
   },
+
+  listAll: async (office: string) => {
+    const parsedObjectId = new Types.ObjectId(office);
+
+    const allDesks = await DeskModel.find({ office: parsedObjectId });
+    return allDesks;
+  },
 };
