@@ -6,11 +6,12 @@ import AuthValidators from '../validators/Auth.validators';
 const appointmentRouter = Router();
 
 const { validateCreate } = AppointmentValidators;
-const { create, list, cancel } = AppointmentController;
+const { create, list, cancel, detail } = AppointmentController;
 const { needsAuth } = AuthValidators;
 
 appointmentRouter.post('/create', needsAuth, validateCreate, create);
 appointmentRouter.get('/list', needsAuth, list);
 appointmentRouter.delete('/cancel', needsAuth, cancel);
+appointmentRouter.post('/detail', needsAuth, detail);
 
 export default appointmentRouter;

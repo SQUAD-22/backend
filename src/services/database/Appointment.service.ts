@@ -15,6 +15,11 @@ export default {
     return newAppointment;
   },
 
+  getById: async (appointment: string) => {
+    const appointmentDoc = await AppointmentModel.findById(appointment);
+    return appointmentDoc;
+  },
+
   listAll: async (office: string, date: string) => {
     const parsedObjectId = new Types.ObjectId(office);
 

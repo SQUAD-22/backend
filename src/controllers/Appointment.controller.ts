@@ -25,4 +25,12 @@ export default {
 
     return res.status(200).json({ errorId: null });
   },
+
+  detail: async (req: Request, res: Response) => {
+    const { appointment } = req.body;
+
+    const appointmentDoc = await AppointmentService.getById(appointment);
+
+    return res.status(200).json(appointmentDoc);
+  },
 };
