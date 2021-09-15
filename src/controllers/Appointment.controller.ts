@@ -9,4 +9,12 @@ export default {
 
     return res.status(201).json(newAppointment);
   },
+
+  list: async (req: Request, res: Response) => {
+    const { userId } = req;
+
+    const appointments = await AppointmentService.listByUser(userId);
+
+    return res.status(200).json(appointments);
+  },
 };

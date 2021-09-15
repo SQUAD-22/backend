@@ -12,10 +12,12 @@ const schema = new Schema<Appointment>({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: 'User',
   },
   office: {
     type: Schema.Types.ObjectId,
     required: true,
+    ref: 'Office',
   },
   desk: {
     type: Number,
