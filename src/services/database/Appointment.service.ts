@@ -47,4 +47,9 @@ export default {
 
     return appointmentCount;
   },
+
+  cancel: async (appointment: string) => {
+    await AppointmentModel.findByIdAndDelete(appointment);
+    return true;
+  },
 };

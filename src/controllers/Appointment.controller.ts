@@ -17,4 +17,12 @@ export default {
 
     return res.status(200).json(appointments);
   },
+
+  cancel: async (req: Request, res: Response) => {
+    const { appointment } = req.body;
+
+    await AppointmentService.cancel(appointment);
+
+    return res.status(200).json({ errorId: null });
+  },
 };
