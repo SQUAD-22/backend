@@ -10,13 +10,15 @@ export const EmailService = {
           to: to,
         },
         locals: {
-          activationURL: `https://squad-22.github.io/frontend/auth/verifyemail?email=${to}&token=${token}`,
+          activationURL: `squad-22.github.io/frontend/auth/verifyemail?email=${to}&token=${token}`,
         },
       })
-      .then(() => {
+      .then((data) => {
+        console.log(data);
         return true;
       })
       .catch((err) => {
+        console.log(err);
         return false;
       });
   },

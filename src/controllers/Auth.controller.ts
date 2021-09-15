@@ -19,8 +19,6 @@ export default {
 
     await EmailService.sendConfirmationEmail(email, validationToken);
 
-    console.log(validationToken);
-
     return res.status(200).json({
       emailSent: true,
     });

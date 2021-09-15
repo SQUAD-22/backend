@@ -4,7 +4,7 @@
   "description": "Backend do aplicativo de agendamentos da FCamara",
   "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js"
+    "start": "npx ts-node -T src/index.ts"
   },
   "engines": {
     "node": "16.8.0"
