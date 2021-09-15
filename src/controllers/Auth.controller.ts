@@ -41,7 +41,9 @@ export default {
     //Salva o usuário
     await user.save();
 
-    return res.json({ error: null });
+    const token = await signJWT({ userId: user._id });
+
+    return res.status(200).json({ token });
   },
 
   login: async (req: Request, res: Response) => {
