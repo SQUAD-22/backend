@@ -5,7 +5,12 @@ export default {
   create: async (req: Request, res: Response) => {
     const { date, office, desk } = req.body;
 
-    const newAppointment = await AppointmentService.create(office, date, desk);
+    const newAppointment = await AppointmentService.create(
+      office,
+      date,
+      desk,
+      req.userId
+    );
 
     return res.status(201).json(newAppointment);
   },

@@ -3,12 +3,17 @@ import AppointmentModel from '../../models/Appointment.model';
 import format from 'date-fns/format';
 
 export default {
-  create: async (office: string, date: string, desk: number) => {
+  create: async (
+    office: string,
+    date: string,
+    desk: number,
+    userId: string
+  ) => {
     const newAppointment = await AppointmentModel.create({
-      userId: '613b9cc74178515ecdca7be8',
-      desk: desk,
+      userId,
+      desk,
       at: date,
-      office: office,
+      office,
       cancelled: false,
     });
 
@@ -35,7 +40,7 @@ export default {
 
   listByUser: async (userId: string) => {
     const appointments = await AppointmentModel.find({
-      userId,
+      userId: userId,
       at: {
         $gte: format(new Date(), 'yyyy-MM-dd'),
       },
@@ -45,8 +50,10 @@ export default {
   },
 
   countAppointments: async (userId: string) => {
+    const parsedObjectId = new Types.ObjectId(userId);
+
     const appointmentCount = await AppointmentModel.countDocuments({
-      userId,
+      userId: parsedObjectId,
       at: {
         $gte: format(new Date(), 'yyyy-MM-dd'),
       },
