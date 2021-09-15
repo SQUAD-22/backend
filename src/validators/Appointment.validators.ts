@@ -37,7 +37,6 @@ export default {
     try {
       const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
       if (!isValid(parsedDate)) return sendError(res, INVALID_FIELD);
-      if (isPast(parsedDate)) return sendError(res, INVALID_FIELD);
     } catch (err) {
       return sendError(res, INVALID_FIELD);
     }
