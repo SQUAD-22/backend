@@ -16,7 +16,9 @@ export default {
   },
 
   getById: async (appointment: string) => {
-    const appointmentDoc = await AppointmentModel.findById(appointment);
+    const appointmentDoc = await (
+      await AppointmentModel.findById(appointment)
+    ).populate('office');
     return appointmentDoc;
   },
 
