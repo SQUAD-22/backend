@@ -26,7 +26,7 @@ app.use('/office', officeRouter);
 app.use('/desk', deskRouter);
 app.use('/appointment', appointmentRouter);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3333, () => {
   console.log('[BACKEND] Servidor iniciado com sucesso!');
   databaseConnect();
 });

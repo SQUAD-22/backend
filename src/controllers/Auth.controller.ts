@@ -3,6 +3,7 @@ import UserService from '../services/database/User.service';
 import JWTService from '../services/misc/JWT.service';
 import { hash } from 'bcrypt';
 import { EmailService } from '../services/email/Email.service';
+import AppointmentService from '../services/database/Appointment.service';
 
 const { signJWT } = JWTService;
 
@@ -52,5 +53,17 @@ export default {
     const token = await signJWT({ userId });
 
     return res.status(200).json({ token });
+  },
+
+  userSummary: async (req: Request, res: Response) => {
+    const { userId } = req;
+
+    const user = await UserService.findById(userId);
+    const appointmentCount = await AppointmentService.countAppointments(userId);
+
+    return res.status(200).json({
+      userName: user.fullName,
+      appointmentCount,
+    });
   },
 };

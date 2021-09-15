@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import AppointmentModel from '../../models/Appointment.model';
+import format from 'date-fns/format';
 
 export default {
   create: async (office: string, date: string, desk: number) => {
@@ -23,5 +24,16 @@ export default {
     });
 
     return allAppointments;
+  },
+
+  countAppointments: async (userId: string) => {
+    const appointmentCount = await AppointmentModel.countDocuments({
+      userId,
+      at: {
+        $gte: format(new Date(), 'yyyy-MM-dd'),
+      },
+    });
+
+    return appointmentCount;
   },
 };

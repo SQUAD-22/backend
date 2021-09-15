@@ -10,7 +10,7 @@ export const EmailService = {
           to: to,
         },
         locals: {
-          activationURL: 'www.google.com',
+          activationURL: `https://squad-22.github.io/frontend/auth/verifyemail?email=${to}&token=${token}`,
         },
       })
       .then(() => {

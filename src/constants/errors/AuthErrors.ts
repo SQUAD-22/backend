@@ -36,7 +36,7 @@ export default {
     message: 'O e-mail informado já está cadastrado.',
   },
   INVALID_TOKEN: {
-    status: 400,
+    status: 401,
     errorId: 'AUTH/INVALID_TOKEN',
     message: 'O token informado não é válido.',
   },
@@ -46,7 +46,7 @@ export default {
     message: 'Este e-mail já está confirmado.',
   },
   TOKEN_NOT_FOUND: {
-    status: 400,
+    status: 401,
     errorId: 'AUTH/TOKEN_NOT_FOUND',
     message: 'O token de autenticação não foi encontrado.',
   },
