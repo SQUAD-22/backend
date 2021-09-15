@@ -50,4 +50,9 @@ export default {
     errorId: 'AUTH/TOKEN_NOT_FOUND',
     message: 'O token de autenticação não foi encontrado.',
   },
+  UNAUTHORIZED: {
+    status: 401,
+    errorId: 'AUTH/UNAUTHORIZED',
+    message: 'Você não tem permissão para executar esta ação.',
+  },
 };

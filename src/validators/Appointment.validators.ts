@@ -8,7 +8,14 @@ import { parse, isValid, isPast } from 'date-fns';
 import DeskModel from '../models/Desk.model';
 
 const { sendError } = ResponseHelpers;
-const { INVALID_FIELD, ALREADY_OCCUPIED } = AppointmentErrors;
+const {
+  INVALID_FIELD,
+  ALREADY_OCCUPIED,
+  APPOINTMENT_ALREADY_EXISTS,
+  INVALID_DATE,
+  INVALID_DESK_ID,
+  OFFICE_NOT_FOUND,
+} = AppointmentErrors;
 
 export default {
   validateCreate: async (req: Request, res: Response, next: NextFunction) => {
@@ -20,26 +27,34 @@ export default {
 
     //Verificar se o escritorio existe
     const officeInstance = await OfficeModel.findById(office);
-    if (!officeInstance) return sendError(res, INVALID_FIELD);
+    if (!officeInstance) return sendError(res, OFFICE_NOT_FOUND);
 
     //Caso o numero da estacao de trabalho seja invalido
     if (desk < 0 || desk > officeInstance.deskCount)
-      return sendError(res, INVALID_FIELD);
+      return sendError(res, INVALID_DESK_ID);
 
     //Verificar se a estação é válida
     const deskInstance = await DeskModel.findOne({
       office: office,
       deskId: desk,
     });
-    if (!deskInstance.available) return sendError(res, INVALID_FIELD);
+    if (!deskInstance.available) return sendError(res, INVALID_DESK_ID);
 
     //Checar se a data é válida
     try {
       const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
-      if (!isValid(parsedDate)) return sendError(res, INVALID_FIELD);
+      if (!isValid(parsedDate)) return sendError(res, INVALID_DATE);
     } catch (err) {
-      return sendError(res, INVALID_FIELD);
+      return sendError(res, INVALID_DATE);
     }
+
+    //Checar se usuário já fez agendamento nesta data
+    const alreadyExistsAppointment = await AppointmentModel.findOne({
+      at: date,
+      userId: req.userId,
+    });
+    if (alreadyExistsAppointment)
+      return sendError(res, APPOINTMENT_ALREADY_EXISTS);
 
     //Checar se ja existe um agendamento nesta data
     const appointmentInstance = await AppointmentModel.findOne({

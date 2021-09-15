@@ -5,6 +5,7 @@ export interface User {
   email: string;
   password: string;
   verified: boolean;
+  admin: boolean;
 }
 
 //Definindo o Schema
@@ -22,6 +23,10 @@ const schema = new Schema<User>({
   verified: {
     type: Boolean,
     required: true,
+    default: false,
+  },
+  admin: {
+    type: Boolean,
     default: false,
   },
 });

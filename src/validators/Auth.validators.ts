@@ -7,7 +7,7 @@ import { compare } from 'bcrypt';
 
 const {
   MISSING_FIELDS,
-  INVALID_EMAIL,
+  UNAUTHORIZED,
   ACCOUNT_ALREADY_EXISTS,
   INVALID_TOKEN,
   ALREADY_VERIFIED,
@@ -108,8 +108,31 @@ export default {
 
     const decodedToken = await decodeJWT(token);
     if (!decodedToken) return sendError(res, INVALID_TOKEN);
+    const { userId } = decodedToken;
 
-    req.userId = decodedToken.userId;
+    const user = await UserService.findById(userId);
+    if (!user) return sendError(res, INVALID_TOKEN);
+
+    req.userId = user._id;
+    next();
+  },
+
+  needsAdmin: async (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return sendError(res, TOKEN_NOT_FOUND);
+
+    const token = authHeader.split(' ')[1];
+    if (!token) return sendError(res, TOKEN_NOT_FOUND);
+
+    const decodedToken = await decodeJWT(token);
+    if (!decodedToken) return sendError(res, INVALID_TOKEN);
+    const { userId } = decodedToken;
+
+    const user = await UserService.findById(userId);
+    if (!user) return sendError(res, INVALID_TOKEN);
+    if (!user.admin) return sendError(res, UNAUTHORIZED);
+
+    req.userId = user._id;
     next();
   },
 };

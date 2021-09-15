@@ -10,6 +10,6 @@ const { validateRegister, validateVerifyemail, needsAuth, validateLogin } =
 authRouter.post('/register', validateRegister, register);
 authRouter.post('/verifyEmail', validateVerifyemail, verifyEmail);
 authRouter.post('/login', validateLogin, login);
-authRouter.post('/summary', needsAuth, userSummary);
+authRouter.get('/summary', needsAuth, userSummary);
 
 export default authRouter;
