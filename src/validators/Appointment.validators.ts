@@ -71,4 +71,22 @@ export default {
 
     next();
   },
+
+  validateCancel: async (req: Request, res: Response, next: NextFunction) => {
+    const { appointment } = req.body;
+    const { userId } = req;
+
+    const params = ['appointment'];
+    for (let i = 0; i < params.length; i++) {
+      if (!req.body[params[i]]) return sendError(res, MISSING_FIELD, params[i]);
+    }
+
+    if (!isValidObjectId(appointment))
+      return sendError(res, INVALID_FIELD, 'appointment');
+
+    const appointmentDoc = await AppointmentService.getById(appointment);
+    if (!appointmentDoc) return sendError(res, INVALID_FIELD, 'appointment');
+
+    next();
+  },
 };
