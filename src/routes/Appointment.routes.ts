@@ -5,13 +5,14 @@ import AuthValidators from '../validators/Auth.validators';
 
 const appointmentRouter = Router();
 
-const { validateCreate, validateCancel } = AppointmentValidators;
+const { validateCreate, validateCancel, validateDetail } =
+  AppointmentValidators;
 const { create, list, cancel, detail } = AppointmentController;
 const { needsAuth } = AuthValidators;
 
 appointmentRouter.post('/create', needsAuth, validateCreate, create);
 appointmentRouter.get('/list', needsAuth, list);
 appointmentRouter.delete('/cancel', needsAuth, validateCancel, cancel);
-appointmentRouter.post('/detail', needsAuth, detail);
+appointmentRouter.post('/detail', needsAuth, validateDetail, detail);
 
 export default appointmentRouter;

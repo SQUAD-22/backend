@@ -7,10 +7,12 @@ import GenericErrors from '../constants/errors/GenericErrors';
 import OfficeService from '../services/database/Office.service';
 import AppointmentService from '../services/database/Appointment.service';
 import DeskService from '../services/database/Desk.service';
+import AuthErrors from '../constants/errors/AuthErrors';
 
 const { sendError } = ResponseHelpers;
 const { ALREADY_OCCUPIED, APPOINTMENT_ALREADY_EXISTS, DESK_IS_UNAVAILABLE } =
   AppointmentErrors;
+const { UNAUTHORIZED } = AuthErrors;
 const { INVALID_FIELD, MISSING_FIELD } = GenericErrors;
 
 export default {
@@ -86,6 +88,30 @@ export default {
 
     const appointmentDoc = await AppointmentService.getById(appointment);
     if (!appointmentDoc) return sendError(res, INVALID_FIELD, 'appointment');
+
+    if (appointmentDoc.userId !== userId)
+      return sendError(res, UNAUTHORIZED, null);
+
+    next();
+  },
+
+  validateDetail: async (req: Request, res: Response, next: NextFunction) => {
+    const { appointment } = req.body;
+    const { userId } = req;
+
+    const params = ['appointment'];
+    for (let i = 0; i < params.length; i++) {
+      if (!req.body[params[i]]) return sendError(res, MISSING_FIELD, params[i]);
+    }
+
+    if (!isValidObjectId(appointment))
+      return sendError(res, INVALID_FIELD, 'appointment');
+
+    const appointmentDoc = await AppointmentService.getById(appointment);
+    if (!appointmentDoc) return sendError(res, INVALID_FIELD, 'appointment');
+
+    if (appointmentDoc.userId !== userId)
+      return sendError(res, UNAUTHORIZED, null);
 
     next();
   },
