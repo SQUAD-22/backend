@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import AppointmentModel from '../../models/Appointment.model';
 import format from 'date-fns/format';
 
@@ -18,6 +18,11 @@ export default {
     });
 
     return newAppointment;
+  },
+
+  findOne: async (query: any) => {
+    const foundDocs = await AppointmentModel.findOne(query);
+    return foundDocs;
   },
 
   getById: async (appointment: string) => {

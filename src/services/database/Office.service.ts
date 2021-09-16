@@ -55,5 +55,10 @@ export default {
   list: async () => {
     const allOfices = await OfficeModel.find({});
     return allOfices;
-  }
+  },
+
+  findById: async (id: string) => {
+    const officeDoc = await OfficeModel.findById(id);
+    return officeDoc;
+  },
 };

@@ -31,5 +31,5 @@ app.use('/appointment', appointmentRouter);
 //Inicia o servidor na porta especificada
 app.listen(process.env.PORT || 3333, () => {
   console.log('[BACKEND] Servidor iniciado com sucesso!');
-  //databaseConnect();
+  databaseConnect();
 });

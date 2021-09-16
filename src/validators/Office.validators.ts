@@ -1,11 +1,11 @@
 import { NextFunction, Response, Request } from 'express';
 import { ResponseHelpers } from '../services/misc/Response.service';
-import OfficeErrors from '../constants/errors/OfficeErrors';
 import { isValidObjectId } from 'mongoose';
-import OfficeModel from '../models/Office.model';
+import GenericErrors from '../constants/errors/GenericErrors';
+import OfficeService from '../services/database/Office.service';
 
 const { sendError } = ResponseHelpers;
-const { MISSING_FIELDS, INVALID_FIELD } = OfficeErrors;
+const { MISSING_FIELD, INVALID_FIELD } = GenericErrors;
 
 //Funções auxiliares
 const isInt = (n: number) => Number.isInteger(n) && n > 0;
@@ -25,7 +25,7 @@ export default {
     ];
     for (let i = 0; i < params.length; i++) {
       if (!req.body[params[i]]) {
-        return sendError(res, MISSING_FIELDS, params[i]);
+        return sendError(res, MISSING_FIELD, params[i]);
       }
     }
 
@@ -67,7 +67,7 @@ export default {
       return sendError(res, INVALID_FIELD, 'deskCount');
 
     //Verifica se o office existe
-    const officeDoc = await OfficeModel.findById(office);
+    const officeDoc = await OfficeService.findById(office);
     if (!officeDoc) return sendError(res, INVALID_FIELD, 'office');
 
     next();

@@ -53,4 +53,9 @@ export default {
     const allDesks = await DeskModel.find({ office: parsedObjectId });
     return allDesks;
   },
+
+  findOne: async (query: any) => {
+    const deskDoc = await DeskModel.findOne(query);
+    return deskDoc;
+  },
 };

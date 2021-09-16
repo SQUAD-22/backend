@@ -1,15 +1,4 @@
 export default {
-  INVALID_EMAIL: {
-    status: 400,
-    errorId: 'AUTH/INVALID_EMAIL',
-    message: 'O e-mail fornecido é inválido.',
-  },
-  MISSING_FIELDS: {
-    status: 400,
-    errorId: 'AUTH/MISSING_FIELDS',
-    message:
-      'Algum ou alguns dos parâmetros obrigatórios não foram enviados corretamente.',
-  },
   PASSWORD_TOO_SHORT: {
     status: 400,
     errorId: 'AUTH/PASSWORD_TOO_SHORT',
@@ -44,11 +33,6 @@ export default {
     status: 409,
     errorId: 'AUTH/ALREDY_VERIFIED',
     message: 'Este e-mail já está confirmado.',
-  },
-  TOKEN_NOT_FOUND: {
-    status: 401,
-    errorId: 'AUTH/TOKEN_NOT_FOUND',
-    message: 'O token de autenticação não foi encontrado.',
   },
   UNAUTHORIZED: {
     status: 401,
