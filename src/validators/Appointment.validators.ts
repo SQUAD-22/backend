@@ -89,9 +89,6 @@ export default {
     const appointmentDoc = await AppointmentService.getById(appointment);
     if (!appointmentDoc) return sendError(res, INVALID_FIELD, 'appointment');
 
-    if (appointmentDoc.userId !== userId)
-      return sendError(res, UNAUTHORIZED, null);
-
     next();
   },
 
