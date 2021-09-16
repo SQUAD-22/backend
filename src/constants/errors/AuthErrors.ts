@@ -21,7 +21,7 @@ export default {
   },
   ACCOUNT_ALREADY_EXISTS: {
     status: 409,
-    errorId: 'AUTH/EMAIL_ALREADY_EXISTS',
+    errorId: 'AUTH/ACCOUNT_ALREADY_EXISTS',
     message: 'O e-mail informado já está cadastrado.',
   },
   INVALID_TOKEN: {
