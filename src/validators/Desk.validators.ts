@@ -12,11 +12,12 @@ export default {
     const { office, deskIds } = req.body;
 
     //Checar se office é um objectid válido
-    if (!isValidObjectId(office)) return sendError(res, INVALID_FIELD);
+    if (!isValidObjectId(office))
+      return sendError(res, INVALID_FIELD, 'office');
 
     //Checa se o escritório existe
     const officeDoc = await OfficeModel.findById(office);
-    if (!officeDoc) return sendError(res, INVALID_FIELD);
+    if (!officeDoc) return sendError(res, INVALID_FIELD, 'office');
 
     //Checa se todos os ids são válidos
     const { deskCount } = officeDoc;
@@ -26,7 +27,7 @@ export default {
           value <= deskCount && value > 0 && typeof value == 'number'
       )
     )
-      return sendError(res, INVALID_FIELD);
+      return sendError(res, INVALID_FIELD, 'deskCount');
 
     next();
   },

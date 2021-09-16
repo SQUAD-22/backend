@@ -26,15 +26,15 @@ export default {
   validateRegister: async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
 
-    //Verificar se os campos foram passados corretamente
-    if (!email) return sendError(res, MISSING_FIELDS);
+    //Verificar se o email foi passado corretamente
+    if (!email) return sendError(res, MISSING_FIELDS, 'email');
 
     //Valida email
     //if (!emailRegex.test(email)) return sendError(res, INVALID_EMAIL);
 
     //Verifica se usuário já existe no banco de dados
     const user = await UserService.findByEmail(email);
-    if (user) return sendError(res, ACCOUNT_ALREADY_EXISTS);
+    if (user) return sendError(res, ACCOUNT_ALREADY_EXISTS, 'email');
 
     next();
   },
@@ -44,15 +44,19 @@ export default {
     res: Response,
     next: NextFunction
   ) => {
-    const { token, password, name } = req.body;
+    const { token, password } = req.body;
 
     //Checa se o token de identificação e senha foram enviados
-    if (!token || !password || !name) return sendError(res, MISSING_FIELDS);
+    const params = ['token', 'password', 'name'];
+    for (let i = 0; i < params.length; i++) {
+      if (!req.body[params[i]]) {
+        return sendError(res, MISSING_FIELDS, params[i]);
+      }
+    }
 
     //Checa se o token de identificação é válido
     const decodedToken = await decodeJWT(token);
-    if (!decodedToken) return sendError(res, INVALID_TOKEN);
-    Request;
+    if (!decodedToken) return sendError(res, INVALID_TOKEN, 'token');
 
     const { userId } = decodedToken;
 
